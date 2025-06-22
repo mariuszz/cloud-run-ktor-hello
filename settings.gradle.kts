@@ -1,0 +1,1 @@
+rootProject.name = "cloud-run-ktor-hello"
