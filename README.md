@@ -14,13 +14,25 @@ This project is part of the "Kotlin + Cloud Run" blog series available at [zamol
 
 ## Quick start
 
+### Docker
+
 ```bash
-./gradlew build
+./gradlew ktor-docker:build
+cd ktor-docker
 docker build -t cloud-run-ktor-hello .
 docker run -p 8080:8080 cloud-run-ktor-hello
 ```
+
+### JIB
+
+```bash
+./gradlew ktor-jib:jibDockerBuild
+docker run -p 8080:8080 cloud-run-ktor-hello-local
+```
+
 Cloud run deployment:
 
 ```bash
+cd ktor-docker
 gcloud run deploy cloud-run-ktor-hello --source . --region europe-central2 --allow-unauthenticated
 ```
