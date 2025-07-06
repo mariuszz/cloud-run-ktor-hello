@@ -1,0 +1,13 @@
+substitutions:
+  _PROJECT_ID: your-project-id
+
+steps:
+  - name: 'gradle:8.14.2-jdk21'
+    dir: '.'
+    env:
+      - "PROJECT_ID=${_PROJECT_ID}"
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        ./gradlew jib --no-daemon

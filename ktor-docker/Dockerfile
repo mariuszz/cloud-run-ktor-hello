@@ -4,6 +4,6 @@ WORKDIR /app
 RUN gradle installDist
 
 FROM eclipse-temurin:21-jre
-COPY --from=build /app/build/install/cloud-run-ktor-hello /app
+COPY --from=build /app/build/install/ktor-docker /app
 EXPOSE 8080
-CMD ["/app/bin/cloud-run-ktor-hello"]
+CMD ["/app/bin/ktor-docker"]

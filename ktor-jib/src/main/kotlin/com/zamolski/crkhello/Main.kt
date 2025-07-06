@@ -11,7 +11,7 @@ fun main() {
     embeddedServer(Netty, port = port) {
         routing {
             get("/") {
-                call.respondText("Hello from Cloud Run!")
+                call.respondText("Hello from Cloud Run! [jib]")
             }
         }
     }.start(wait = true)
