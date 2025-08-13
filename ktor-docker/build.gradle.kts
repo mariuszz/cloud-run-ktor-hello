@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.1.10"
+    kotlin("jvm") version "2.2.0"
     application
 }
 
@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core:3.2.0")
-    implementation("io.ktor:ktor-server-netty:3.2.0")
+    implementation("io.ktor:ktor-server-core:3.2.3")
+    implementation("io.ktor:ktor-server-netty:3.2.3")
     implementation("org.slf4j:slf4j-simple:2.0.17")
 }
