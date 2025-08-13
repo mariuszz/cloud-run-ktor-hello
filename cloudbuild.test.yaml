@@ -1,0 +1,8 @@
+steps:
+  - name: 'gradle:8.14.2-jdk21'
+    dir: '.'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        ./gradlew build --no-daemon
