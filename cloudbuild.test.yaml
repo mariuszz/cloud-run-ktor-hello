@@ -1,6 +1,8 @@
 steps:
   - name: 'gradle:8.14.2-jdk21'
     dir: '.'
+    env:
+      - 'PROJECT_ID=$PROJECT_ID'
     entrypoint: bash
     args:
       - -c
