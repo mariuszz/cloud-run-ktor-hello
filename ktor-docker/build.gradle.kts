@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.2.0"
+    alias(libs.plugins.kotlin.jvm)
     application
 }
 
@@ -7,16 +7,9 @@ application {
     mainClass.set("com.zamolski.crkhello.MainKt")
 }
 
-kotlin {
-    jvmToolchain(21)
-}
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    implementation("io.ktor:ktor-server-core:3.2.3")
-    implementation("io.ktor:ktor-server-netty:3.2.3")
-    implementation("org.slf4j:slf4j-simple:2.0.17")
+    implementation(platform(libs.ktor.bom))
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.netty)
+    implementation(libs.slf4j.simple)
 }
