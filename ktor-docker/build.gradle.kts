@@ -9,7 +9,7 @@ application {
 
 dependencies {
     implementation(platform(libs.ktor.bom))
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.netty)
+    implementation("io.ktor:ktor-server-core")
+    implementation("io.ktor:ktor-server-netty")
     implementation(libs.slf4j.simple)
 }
