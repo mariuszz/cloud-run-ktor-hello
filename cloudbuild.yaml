@@ -3,8 +3,11 @@ steps:
     dir: '.'
     env:
       - 'PROJECT_ID=$PROJECT_ID'
+      - 'GRADLE_USER_HOME=/workspace/.gradle'
     entrypoint: bash
     args:
       - -c
       - |
         ./gradlew jib --no-daemon
+caches:
+  - path: /workspace/.gradle

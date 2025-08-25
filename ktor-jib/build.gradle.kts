@@ -12,7 +12,7 @@ val isDockerBuild = gradle.startParameter.taskNames.any { it.contains("jibDocker
 val projectId: String? = if (!isDockerBuild) {
     System.getenv("PROJECT_ID")
         ?: findProperty("projectId") as? String
-        ?: error("Missing project ID. Set env PROJECT_ID or use -PprojectId=...")
+        ?: "project-not-set"
 } else null
 val imageName = if (!isDockerBuild)
     "gcr.io/$projectId/cloud-run-ktor-hello"
