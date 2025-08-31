@@ -9,15 +9,12 @@ application {
 }
 
 val isDockerBuild = gradle.startParameter.taskNames.any { it.contains("jibDockerBuild") }
-val projectId: String? = if (!isDockerBuild) {
-    System.getenv("PROJECT_ID")
-        ?: findProperty("projectId") as? String
-        ?: error("Missing project ID. Set env PROJECT_ID or use -PprojectId=...")
-} else null
-val imageName = if (!isDockerBuild)
-    "gcr.io/$projectId/cloud-run-ktor-hello"
-else
-    "cloud-run-ktor-hello-local"
+
+val imageName: String? =
+    if (!isDockerBuild)
+        System.getProperty("jib.to.image", "jib.to.image-not-set")
+    else
+        "cloud-run-ktor-hello-local"
 
 jib {
     from {
@@ -25,7 +22,7 @@ jib {
     }
     to {
         image = imageName
-        tags = setOf("latest")
+        tags = System.getProperty("jib.to.tags", "latest").split(",").toSet()
     }
     container {
         ports = listOf("8080")
