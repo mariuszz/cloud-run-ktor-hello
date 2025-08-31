@@ -10,8 +10,7 @@ steps:
     args:
       - -c
       - |
-        IMAGE="europe-west1-docker.pkg.dev/${PROJECT_ID}/${_REPO}/cloud-run-ktor-hello"
-        ./gradlew jib --no-daemon -Djib.to.image="${IMAGE}" -Djib.to.tags="latest,${COMMIT_SHA}"
+        ./gradlew jib --no-daemon -Djib.to.image="europe-west1-docker.pkg.dev/${PROJECT_ID}/${_REPO}/cloud-run-ktor-hello" -Djib.to.tags="latest,${COMMIT_SHA}"
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     id: 'deploy'
     entrypoint: gcloud
