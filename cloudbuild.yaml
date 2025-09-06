@@ -23,7 +23,3 @@ steps:
       - --platform=managed
       - --allow-unauthenticated
       - --execution-environment=gen2
-
-images:
-  - 'europe-west1-docker.pkg.dev/${PROJECT_ID}/${_REPO}/cloud-run-ktor-hello:${COMMIT_SHA}'
-  - 'europe-west1-docker.pkg.dev/${PROJECT_ID}/${_REPO}/cloud-run-ktor-hello:latest'
