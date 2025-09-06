@@ -1,4 +1,4 @@
-package com.zamolski.crkhello
+package com.zamolski.crkhello.app
 
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -7,11 +7,12 @@ import io.ktor.server.routing.*
 
 fun main() {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
+    val buildMode = System.getenv("BUILD_MODE") ?: "UNKNOWN"
 
     embeddedServer(Netty, port = port) {
         routing {
             get("/") {
-                call.respondText("Hello from Cloud Run! [jib]")
+                call.respondText("Hello from Cloud Run! [${buildMode}]")
             }
         }
     }.start(wait = true)

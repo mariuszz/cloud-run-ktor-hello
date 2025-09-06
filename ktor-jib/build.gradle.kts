@@ -1,12 +1,8 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.jib)
-    application
 }
 
-application {
-    mainClass.set("com.zamolski.crkhello.MainKt")
-}
 
 val isDockerBuild = gradle.startParameter.taskNames.any { it.contains("jibDockerBuild") }
 
@@ -25,13 +21,14 @@ jib {
         tags = System.getProperty("jib.to.tags", "latest").split(",").toSet()
     }
     container {
+        mainClass = "com.zamolski.crkhello.app.MainKt"
         ports = listOf("8080")
+        environment = mapOf(
+            "BUILD_MODE" to "JIB"
+        )
     }
 }
 
 dependencies {
-    implementation(platform(libs.ktor.bom))
-    implementation("io.ktor:ktor-server-core")
-    implementation("io.ktor:ktor-server-netty")
-    implementation(libs.slf4j.simple)
+    implementation(project(":ktor-app"))
 }
