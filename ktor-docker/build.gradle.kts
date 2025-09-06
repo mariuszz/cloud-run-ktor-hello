@@ -1,15 +1,12 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    id("org.jetbrains.kotlin.jvm") version "2.2.10"
     application
 }
 
 application {
-    mainClass.set("com.zamolski.crkhello.MainKt")
+    mainClass.set("com.zamolski.crkhello.app.MainKt")
 }
 
 dependencies {
-    implementation(platform(libs.ktor.bom))
-    implementation("io.ktor:ktor-server-core")
-    implementation("io.ktor:ktor-server-netty")
-    implementation(libs.slf4j.simple)
+    implementation(project(":ktor-app"))
 }

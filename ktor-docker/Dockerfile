@@ -1,9 +1,10 @@
-FROM gradle:8.14.2-jdk21 AS build
-COPY --chown=gradle:gradle . /app
-WORKDIR /app
-RUN gradle installDist
+FROM gradle:9.0.0-jdk21 AS build
+WORKDIR /workspace
+COPY --chown=gradle:gradle ../ .
+RUN ./gradlew :ktor-docker:installDist --no-daemon
 
 FROM eclipse-temurin:21-jre
-COPY --from=build /app/build/install/ktor-docker /app
+ENV BUILD_MODE=DOCKER
+COPY --from=build /workspace/ktor-docker/build/install/ktor-docker /app
 EXPOSE 8080
 CMD ["/app/bin/ktor-docker"]

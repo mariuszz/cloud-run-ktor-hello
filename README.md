@@ -18,8 +18,7 @@ This project is part of the "Kotlin + Cloud Run" blog series available at [zamol
 
 ```bash
 ./gradlew ktor-docker:build
-cd ktor-docker
-docker build -t cloud-run-ktor-hello .
+docker build -f ktor-docker/Dockerfile -t cloud-run-ktor-hello .
 docker run -p 8080:8080 cloud-run-ktor-hello
 ```
 
