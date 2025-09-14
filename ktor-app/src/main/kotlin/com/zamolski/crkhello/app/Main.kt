@@ -1,16 +1,14 @@
 package com.zamolski.crkhello.app
 
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.callid.*
-import io.ktor.server.plugins.calllogging.CallLogging
+import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.slf4j.LoggerFactory
-import java.util.UUID
-import kotlin.uuid.Uuid
+import java.util.*
 
 fun main() {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
