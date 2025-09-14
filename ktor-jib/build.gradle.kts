@@ -24,8 +24,7 @@ jib {
         mainClass = "com.zamolski.crkhello.app.MainKt"
         ports = listOf("8080")
         environment = mapOf(
-            "BUILD_MODE" to "JIB",
-            "PROJECT_ID" to (System.getenv("PROJECT_ID") ?: "unknown")
+            "BUILD_MODE" to "JIB"
         )
     }
 }

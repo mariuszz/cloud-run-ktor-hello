@@ -21,7 +21,7 @@ fun main() {
         configureLogging(projectId)
         routing {
             get("/") {
-                call.respondText("Hello from Cloud Run! [${buildMode}]")
+                call.respondText("Hello from Cloud Run! [${buildMode}], project id: $projectId")
             }
             get("/health") {
                 logger.info("Health check requested")
