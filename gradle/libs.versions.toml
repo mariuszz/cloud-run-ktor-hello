@@ -3,10 +3,12 @@ kotlin = "2.2.10"
 ktor = "3.2.3"
 jib = "3.4.5"
 slf4j = "2.0.17"
+logback = "1.5.18"
 
 [libraries]
 ktor-bom = { module = "io.ktor:ktor-bom", version.ref = "ktor" }
-slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback = {module = "ch.qos.logback:logback-classic", version.ref = "logback"}
 
 [plugins]
 kotlin-jvm           = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
