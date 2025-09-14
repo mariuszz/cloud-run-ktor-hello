@@ -4,11 +4,13 @@ ktor = "3.2.3"
 jib = "3.4.5"
 slf4j = "2.0.17"
 logback = "1.5.18"
+logstashLogbackEncoder = "8.1"
 
 [libraries]
 ktor-bom = { module = "io.ktor:ktor-bom", version.ref = "ktor" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 logback = {module = "ch.qos.logback:logback-classic", version.ref = "logback"}
+logback-logstash-encoder = {module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstashLogbackEncoder"}
 
 [plugins]
 kotlin-jvm           = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
