@@ -1,18 +1,21 @@
 <configuration>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>
-                {
-                "severity": "%level",
-                "message": "%msg",
-                "trace": "%X{logging.googleapis.com/trace}",
-                "timestamp": "%date{ISO8601}"
-                }
-            </Pattern>
+    <include resource="net/logstash/logback/logback-include.xml"/>
+
+    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <logLevel/>
+                <threadName/>
+                <loggerName/>
+                <message/>
+                <mdc />
+                <stackTrace/>
+            </providers>
         </encoder>
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="JSON_CONSOLE"/>
     </root>
 </configuration>
