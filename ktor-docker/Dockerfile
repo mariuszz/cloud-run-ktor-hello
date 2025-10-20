@@ -4,7 +4,8 @@ COPY --chown=gradle:gradle ../ .
 RUN ./gradlew :ktor-docker:installDist --no-daemon
 
 FROM eclipse-temurin:21-jre
-ENV BUILD_MODE=DOCKER
+ENV BUILD_MODE=DOCKER \
+    PROJECT_ID=${PROJECT_ID:-local}
 COPY --from=build /workspace/ktor-docker/build/install/ktor-docker /app
 EXPOSE 8080
 CMD ["/app/bin/ktor-docker"]
