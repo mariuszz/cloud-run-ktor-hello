@@ -90,7 +90,10 @@ fun setupCloudMonitoring() {
         .registerMetricReader(reader)
         .build()
 
-    val openTelemetry = OpenTelemetrySdk.builder()
+    OpenTelemetrySdk.builder()
         .setMeterProvider(meterProvider)
         .buildAndRegisterGlobal()
+
+    println("MeterProvider class: " + meterProvider.javaClass.name)
+    println("Global meter provider: " + GlobalOpenTelemetry.get().meterProvider)
 }
