@@ -1,12 +1,19 @@
 package com.zamolski.crkhello.app
 
+import com.google.cloud.opentelemetry.metric.GoogleCloudMetricExporter
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.opentelemetry.api.GlobalOpenTelemetry
+import io.opentelemetry.sdk.OpenTelemetrySdk
+import io.opentelemetry.sdk.metrics.SdkMeterProvider
+import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader
 import org.slf4j.LoggerFactory
+import java.time.Duration
+import kotlin.system.measureTimeMillis
 
 fun main() {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
@@ -17,6 +24,16 @@ fun main() {
 
     embeddedServer(Netty, port = port) {
         configureLogging(projectId)
+        setupCloudMonitoring()
+        val meter = GlobalOpenTelemetry.getMeter("cloud-run-ktor-hello")
+        val processedCounter = meter.counterBuilder("reports_processed_total")
+            .setDescription("Processed reports counter")
+            .build()
+        val processingTime = meter.histogramBuilder("report_processing_ms")
+            .setDescription("Report processing time in milliseconds")
+            .build()
+
+
         routing {
             get("/") {
                 call.respondText("Hello from Cloud Run! [${buildMode}], project id: $projectId")
@@ -28,6 +45,14 @@ fun main() {
             get("/error") {
                 logger.error("Thrown exception", RuntimeException())
                 call.respondText("ERROR")
+            }
+            get("/process") {
+                val time = measureTimeMillis {
+                    Thread.sleep((500..1500).random().toLong())
+                    processedCounter.add(1)
+                }
+                processingTime.record(time.toDouble())
+                call.respondText("Processed in ${time}ms")
             }
         }
     }.start(wait = true)
@@ -54,5 +79,18 @@ fun Application.configureLogging(projectId: String) {
             if (sampled == "01") "true" else "false"
         }
     }
+}
+fun setupCloudMonitoring() {
+    val exporter = GoogleCloudMetricExporter.createWithDefaultConfiguration()
+    val reader = PeriodicMetricReader.builder(exporter)
+        .setInterval(Duration.ofSeconds(30))
+        .build()
 
+    val meterProvider = SdkMeterProvider.builder()
+        .registerMetricReader(reader)
+        .build()
+
+    val openTelemetry = OpenTelemetrySdk.builder()
+        .setMeterProvider(meterProvider)
+        .buildAndRegisterGlobal()
 }
