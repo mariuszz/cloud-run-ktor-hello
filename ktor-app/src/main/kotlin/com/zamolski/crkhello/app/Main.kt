@@ -1,6 +1,5 @@
 package com.zamolski.crkhello.app
 
-import com.google.cloud.opentelemetry.metric.GoogleCloudMetricExporter
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -8,11 +7,8 @@ import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.opentelemetry.api.GlobalOpenTelemetry
-import io.opentelemetry.sdk.OpenTelemetrySdk
-import io.opentelemetry.sdk.metrics.SdkMeterProvider
-import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader
+import kotlinx.coroutines.delay
 import org.slf4j.LoggerFactory
-import java.time.Duration
 import kotlin.system.measureTimeMillis
 
 fun main() {
@@ -22,9 +18,14 @@ fun main() {
     val logger = LoggerFactory.getLogger("cloud-run-ktor-hello")
     val projectId = System.getenv("PROJECT_ID") ?: "unknown"
 
+    Runtime.getRuntime().addShutdownHook(Thread {
+        logger.info("Shutting down OpenTelemetry")
+        OpenTelemetryConfig.shutdown()
+    })
+
     embeddedServer(Netty, port = port) {
         configureLogging(projectId)
-        setupCloudMonitoring()
+        OpenTelemetryConfig.initialize()
         val meter = GlobalOpenTelemetry.getMeter("cloud-run-ktor-hello")
         val processedCounter = meter.counterBuilder("reports_processed_total")
             .setDescription("Processed reports counter")
@@ -48,7 +49,7 @@ fun main() {
             }
             get("/process") {
                 val time = measureTimeMillis {
-                    Thread.sleep((500..1500).random().toLong())
+                    delay((500..1500).random().toLong())
                     processedCounter.add(1)
                 }
                 processingTime.record(time.toDouble())
@@ -79,21 +80,4 @@ fun Application.configureLogging(projectId: String) {
             if (sampled == "01") "true" else "false"
         }
     }
-}
-fun setupCloudMonitoring() {
-    val exporter = GoogleCloudMetricExporter.createWithDefaultConfiguration()
-    val reader = PeriodicMetricReader.builder(exporter)
-        .setInterval(Duration.ofSeconds(30))
-        .build()
-
-    val meterProvider = SdkMeterProvider.builder()
-        .registerMetricReader(reader)
-        .build()
-
-    OpenTelemetrySdk.builder()
-        .setMeterProvider(meterProvider)
-        .buildAndRegisterGlobal()
-
-    println("MeterProvider class: " + meterProvider.javaClass.name)
-    println("Global meter provider: " + GlobalOpenTelemetry.get().meterProvider)
 }
