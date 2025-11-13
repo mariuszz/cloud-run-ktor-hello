@@ -13,5 +13,6 @@ dependencies {
     implementation("io.opentelemetry:opentelemetry-api")
     implementation("io.opentelemetry:opentelemetry-sdk")
     implementation("io.opentelemetry:opentelemetry-sdk-metrics")
+    implementation(libs.opentelemetry.semconv)
     implementation(libs.opentelemetry.google.cloud)
 }

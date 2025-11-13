@@ -7,6 +7,7 @@ logback = "1.5.18"
 logstashLogbackEncoder = "8.1"
 opentelemetry = "1.56.0"
 opentelemetry-google-cloud = "0.36.0"
+opentelemetry-semconv = "1.37.0"
 
 [libraries]
 ktor-bom = { module = "io.ktor:ktor-bom", version.ref = "ktor" }
@@ -15,6 +16,7 @@ logback = {module = "ch.qos.logback:logback-classic", version.ref = "logback"}
 logback-logstash-encoder = {module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstashLogbackEncoder"}
 opentelemetry-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "opentelemetry" }
 opentelemetry-google-cloud = { module = "com.google.cloud.opentelemetry:exporter-metrics", version.ref = "opentelemetry-google-cloud" }
+opentelemetry-semconv = { module = "io.opentelemetry.semconv:opentelemetry-semconv", version.ref = "opentelemetry-semconv" }
 
 [plugins]
 kotlin-jvm           = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
