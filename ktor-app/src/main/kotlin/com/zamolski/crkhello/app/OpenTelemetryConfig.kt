@@ -5,6 +5,8 @@ import io.opentelemetry.api.GlobalOpenTelemetry
 import io.opentelemetry.sdk.OpenTelemetrySdk
 import io.opentelemetry.sdk.metrics.SdkMeterProvider
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader
+import io.opentelemetry.sdk.resources.Resource
+import io.opentelemetry.semconv.ServiceAttributes
 import org.slf4j.LoggerFactory
 import java.time.Duration
 
@@ -17,13 +19,19 @@ object OpenTelemetryConfig {
     fun initialize(): OpenTelemetrySdk {
         if (sdk != null) return sdk!!
 
+        val resource = Resource.builder()
+            .put(ServiceAttributes.SERVICE_NAME, "cloud-run-ktor-hello")
+            .put(ServiceAttributes.SERVICE_VERSION, "1.0.0")
+            .build()
+
         val exporter = GoogleCloudMetricExporter.createWithDefaultConfiguration()
 
         val reader = PeriodicMetricReader.builder(exporter)
-            .setInterval(Duration.ofSeconds(30))
+            .setInterval(Duration.ofSeconds(60))
             .build()
 
         val meterProvider = SdkMeterProvider.builder()
+            .setResource(resource)
             .registerMetricReader(reader)
             .build()
 
